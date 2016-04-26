@@ -1,0 +1,37 @@
+#needs to be rewritten for hunger
+data:
+  restart: always
+  image: postgres:latest
+  volumes:
+    - /var/lib/postgresql
+    - ./sql:/sql
+  command: "true"
+
+postgres:
+  restart: always
+  image: postgres:latest
+  volumes_from:
+    - data
+  ports:
+    - "5432:5432"
+
+backend:
+  restart: always
+  build: ./backend
+  ports:
+    - "8000:8000"
+  environment:
+    DBHOST: postgres
+  links:
+    - postgres
+
+frontend:
+  restart: always
+  build: ./frontend
+  ports:
+    - "80:80"
+  links:
+    - postgres
+
+    Status API Training Shop Blog About 
+
